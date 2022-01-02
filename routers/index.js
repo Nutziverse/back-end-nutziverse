@@ -6,6 +6,7 @@ const adminRoutes = require("./admin.router")
 // const productsRouter = require("./products")
 // const cartRouter = require("./cart")
 // const historyRouter = require("./history")
+const AkunRoute = require("./akun.router")
 
 const router = express.Router();
 
@@ -16,6 +17,6 @@ router.use("/admin", adminRoutes)
 // router.use("/cart", cartRouter)
 // router.use("/wishlist", wishlistrouter);
 // router.use("/review", reviewrouter);
+router.use("/akun", AkunRoute)
 
 module.exports = router
-
