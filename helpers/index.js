@@ -88,3 +88,4 @@ module.exports = {
   allowedAdmin: allowedAdmin,
   allowedUser: allowedUser,
 };
+
