@@ -1,9 +1,9 @@
 const express = require("express");
-const profileController = require("../controllers/profile.controller");
+const getProfile = require("../controllers/profile.controller");
 const { verifyToken, allowedUser } = require("../helpers");
 const router = express.Router();
 
-router.get("/profile", [verifyToken, allowedUser], profileController.getProfile);
+router.get("/", [verifyToken, allowedUser], getProfile);
 
-const ProfileModel = mongoose.model("Profile", profileSchema);
-module.exports = ProfileSchema;
+// const ProfileModel = mongoose.model("Profile");
+module.exports = router;
