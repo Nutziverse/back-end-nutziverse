@@ -16,8 +16,7 @@ const userSchema = new mongoose.Schema(
 			maxlength: 9,
 		},
 		aktivitasFisik: {
-			type: Number,
-			maxlength: 3,
+			type: Object,
 		},
 		tinggi: {
 			type: Number,
