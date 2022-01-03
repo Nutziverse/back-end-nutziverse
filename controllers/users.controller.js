@@ -17,8 +17,29 @@ class UsersController {
 				password,
 				aktivitasFisik,
 			} = req.body;
+			aktivitasFisik = Number(aktivitasFisik);
 			const emailExist = await UsersModel.findOne({ email: email });
+			let keterangan = "";
 			if (emailExist === null) {
+				switch (aktivitasFisik) {
+					case 1.2:
+						keterangan = "aktivitas rendah";
+						break;
+					case 1.3:
+						keterangan = "aktivitas sedang";
+						break;
+					case 1.4:
+						keterangan = "aktivitas rendah";
+						break;
+					default:
+						keterangan = "aktivitas tidak ada";
+						break;
+				}
+				console.log(keterangan);
+				aktivitasFisik = {
+					keterangan: keterangan,
+					nilai: aktivitasFisik,
+				};
 				password = bcrypt.hashSync(password, saltRounds);
 				const users = new UsersModel({
 					nama: nama,
