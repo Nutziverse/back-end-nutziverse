@@ -1,4 +1,3 @@
-
 // import user model
 const { dataToken } = require("../helpers")
 const UserModel = require("../models/users.model")
@@ -6,8 +5,8 @@ const bcrypt = require("bcrypt")
 const saltRounds = 10
 
 const getAkun = async (req, res) => {
-  const {data} = dataToken(req, res)
-  
+  const { data } = dataToken(req, res);
+
   try {
     // get by user id
     const UID = data._id
@@ -26,14 +25,14 @@ const getAkun = async (req, res) => {
     res.send(akun)
     
   } catch (error) {
-    res.status(500).send({error: error.message})
+    res.status(500).send({ error: error.message });
   }
-}
+};
 
 const editAkun = async (req, res) => {
-  const {data} = dataToken(req, res)
-  const updateData = req.body
-  
+  const { data } = dataToken(req, res);
+  const updateData = req.body;
+
   try {
     // edit akun user by id
     const UID = data._id
@@ -107,12 +106,10 @@ const changePassword = async (req, res) => {
     res.status(statusCode).send({
       message: message
     })
-
-
   } catch (error) {
-    res.status(500).send({error: error.message})
+    res.status(500).send({ error: error.message });
   }
-}
+};
 
 module.exports = {
   getAkun,
