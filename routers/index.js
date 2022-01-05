@@ -8,9 +8,9 @@ const adminRoutes = require("./admin.router");
 // const historyRouter = require("./history")
 const AkunRoute = require("./akun.router");
 const ProfileRoute = require("./profile.router");
+const ResepRoute = require("./resep.router");
 
 const FoodRouter = require("./food.router");
-
 
 const router = express.Router();
 
@@ -27,7 +27,6 @@ router.use("/akun", AkunRoute);
 
 router.use("/resep", ResepRoute);
 
-router.use("/food", FoodRouter)
-
+router.use("/food", FoodRouter);
 
 module.exports = router;
