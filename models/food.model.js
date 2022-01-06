@@ -16,16 +16,6 @@ const FoodSchema = new mongoose.Schema({
     maxlength: 255,
     required: true
   },
-  penyetaraanPorsi: {
-    value: {
-      type: Number,
-      required: true
-    },
-    satuan: {
-      type: String,
-      required: true
-    }
-  },
   kaloriMakanan: {
     type: Number,
     required: true
@@ -44,6 +34,16 @@ const FoodSchema = new mongoose.Schema({
   },
   karbon: {
     type: Number,
+    required: true
+  },
+  porsi: {
+    type: String,
+    maxlength: 20,
+    required: true
+  },
+  penyetaraanPorsi: {
+    type: String,
+    maxlength: 15,
     required: true
   }
 }, opts)
