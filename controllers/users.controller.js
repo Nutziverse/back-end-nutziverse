@@ -35,7 +35,6 @@ class UsersController {
 						keterangan = "aktivitas tidak ada";
 						break;
 				}
-				console.log(keterangan);
 				aktivitasFisik = {
 					keterangan: keterangan,
 					nilai: aktivitasFisik,
