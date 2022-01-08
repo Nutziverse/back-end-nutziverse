@@ -20,14 +20,14 @@ const TrackingMakananSchema = new mongoose.Schema({
       type: Number,
       required: true
     }
-  }],
+  }, {_id: false}],
   totKalori: {
     type: Number
   },
   totKarbon: {
     type: Number
   }
-})
+}, {_id: false})
 
 const TrackingSchema = new mongoose.Schema({
   userID: {
