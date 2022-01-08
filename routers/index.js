@@ -9,6 +9,7 @@ const adminRoutes = require("./admin.router");
 const AkunRoute = require("./akun.router");
 const ProfileRoute = require("./profile.router");
 const FoodRouter = require("./food.router");
+const TrackingRouter = require("./tracking.router");
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.use("/admin", adminRoutes);
 router.use("/profile", ProfileRoute);
 router.use("/akun", AkunRoute);
 router.use("/food", FoodRouter)
+router.use("/tracking", TrackingRouter)
 
 module.exports = router;
