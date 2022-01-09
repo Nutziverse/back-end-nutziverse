@@ -1,4 +1,5 @@
 const { dataToken } = require("../helpers");
+const { findIndexByDate, calculate_totalNutrition } = require("../helpers/tracking.helper");
 const TrackingModel = require("../models/tracking.model");
 
 const getTracking = async (req, res) => {
@@ -19,6 +20,93 @@ const getTracking = async (req, res) => {
   }
 }
 
+const todayTracking = async (req, res) => {
+  const {data} = dataToken(req, res)
+  const UID = data._id
+
+  let today = new Date()
+  today = today.toISOString().split('T')[0]
+
+  let todayTracking = null
+  
+  try {
+    const tracking = await TrackingModel.findOne({userID: UID}).populate({
+      path: 'tracking',
+      populate: {
+        path: 'makanan',
+        populate: 'makananID'
+      }
+    })
+    
+    const todayTrackingIndex = findIndexByDate(tracking.tracking, today)
+    
+    if(todayTrackingIndex > -1) {
+      todayTracking = tracking.tracking[todayTrackingIndex]
+    }
+
+    const {totKarbohidrat, totProtein, totLemak} = calculate_totalNutrition(todayTracking)
+    
+    const response = {
+      _id: tracking._id,
+      userID: tracking.userID,
+      tracking: todayTracking,
+      totKarbohidrat: totKarbohidrat,
+      totProtein: totProtein,
+      totLemak: totLemak,
+      kendaraan: tracking.kendaraan
+    }
+    
+    res.send(response)
+  } catch (error) {
+    res.status(500).send({error: error.message})
+  }
+}
+
+const perDateTracking = async (req, res) => {
+  const {data} = dataToken(req, res)
+  const UID = data._id
+  
+  let {date} = req.body
+  let dateTracking = null
+  
+  try {
+    if(!date) {
+      return res.status(400).send({message: "tolong pilih tanggal"})
+    }
+
+    const tracking = await TrackingModel.findOne({userID: UID}).populate({
+      path: 'tracking',
+      populate: {
+        path: 'makanan',
+        populate: 'makananID'
+      }
+    })
+    
+    const dateTrackingIndex = findIndexByDate(tracking.tracking, date)
+    
+    if(dateTrackingIndex > -1) {
+      dateTracking = tracking.tracking[dateTrackingIndex]
+    }
+
+    const {totKarbohidrat, totProtein, totLemak} = calculate_totalNutrition(dateTracking)
+    
+    const response = {
+      _id: tracking._id,
+      userID: tracking.userID,
+      tracking: dateTracking,
+      totKarbohidrat: totKarbohidrat,
+      totProtein: totProtein,
+      totLemak: totLemak,
+      kendaraan: tracking.kendaraan
+    }
+    
+    res.send(response)
+  } catch (error) {
+    res.status(500).send({error: error.message})
+  }
+
+}
+
 const addTracking = async (req, res) => {
   const {data} = dataToken(req, res)
   const UID = data._id
@@ -33,7 +121,6 @@ const addTracking = async (req, res) => {
       today = today.toISOString().split('T')[0]
 
       const trackingIndex = trackingExist.tracking.findIndex(el => el.tanggal.toISOString().includes(today))
-      console.log(trackingIndex);
 
       // jika sudah terdapat history makanan di hari ini
       if(trackingIndex > -1) {
@@ -83,5 +170,7 @@ const addTracking = async (req, res) => {
 
 module.exports = {
   getTracking,
-  addTracking
+  addTracking,
+  todayTracking,
+  perDateTracking
 }
