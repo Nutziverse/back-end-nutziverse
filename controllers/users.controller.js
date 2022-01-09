@@ -35,7 +35,6 @@ class UsersController {
 						keterangan = "aktivitas tidak ada";
 						break;
 				}
-				console.log(keterangan);
 				aktivitasFisik = {
 					keterangan: keterangan,
 					nilai: aktivitasFisik,
@@ -70,10 +69,18 @@ class UsersController {
 			if (existUseremail !== null || existUserno_hp !== null) {
 				let compare = bcrypt.compareSync(password, existUseremail.password);
 				if (compare) {
-					const tokenUser = {
-						_id: existUseremail._id,
-						role: "user",
-					};
+					let tokenUser;
+					if (existUseremail) {
+						tokenUser = {
+							_id: existUseremail._id,
+							role: "user",
+						};
+					} else {
+						tokenUser = {
+							_id: existUserno_hp._id,
+							role: "user",
+						};
+					}
 					const createToken = generateToken(tokenUser);
 					res.status(200).send({ message: "welcome", token: createToken });
 				} else {
