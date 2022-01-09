@@ -9,8 +9,8 @@ const adminRoutes = require("./admin.router");
 const AkunRoute = require("./akun.router");
 const ProfileRoute = require("./profile.router");
 const ResepRoute = require("./resep.router");
-
 const FoodRouter = require("./food.router");
+const PilihMakananRouter = require("./pilihmakanan.router");
 
 const router = express.Router();
 
@@ -24,9 +24,8 @@ router.use("/admin", adminRoutes);
 // router.use("/review", reviewrouter);
 router.use("/profile", ProfileRoute);
 router.use("/akun", AkunRoute);
-
 router.use("/resep", ResepRoute);
-
+router.use("/pilihmakanan", PilihMakananRouter);
 router.use("/food", FoodRouter);
 
 module.exports = router;
