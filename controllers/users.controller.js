@@ -16,6 +16,8 @@ class UsersController {
 				no_hp,
 				password,
 				aktivitasFisik,
+				gizi,
+				kaloriYgDibutuhkan,
 			} = req.body;
 			aktivitasFisik = Number(aktivitasFisik);
 			const emailExist = await UsersModel.findOne({ email: email });
@@ -50,6 +52,8 @@ class UsersController {
 					aktivitasFisik: aktivitasFisik,
 					no_hp: no_hp,
 					password: password,
+					gizi,
+					kaloriYgDibutuhkan,
 				});
 				const saved = await users.save();
 				res.status(201).send(saved);
@@ -83,6 +87,20 @@ class UsersController {
 			}
 		} catch (error) {
 			res.status(500).send({ err: error });
+		}
+	}
+	static async loginByGoogle(req, res) {
+		try {
+			const profile = req.body.profileObj;
+			const { name, email } = profile;
+			const users = new UsersModel({
+				nama: nama,
+				email: email,
+			});
+			const saved = await users.save();
+			res.status(200).send(saved);
+		} catch (error) {
+			res.status(500).send(error);
 		}
 	}
 }
