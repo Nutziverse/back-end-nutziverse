@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
 		aktivitasFisik: {
 			type: Object,
 		},
+
 		tinggi: {
 			type: Number,
 			maxlength: 3,
@@ -41,6 +42,12 @@ const userSchema = new mongoose.Schema(
 		tracking_nutrisi: {
 			type: mongoose.Types.ObjectId,
 			ref: "Tracking",
+		},
+		kaloriYgDibutuhkan: {
+			type: Number,
+		},
+		gizi: {
+			type: Object,
 		},
 	},
 	{
