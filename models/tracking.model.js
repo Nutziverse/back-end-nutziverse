@@ -22,7 +22,6 @@ const TrackingMakananSchema = new mongoose.Schema({
     },
     jam: {
       type: String,
-      default: new Date().toLocaleTimeString(),
       required: true
     }
   }, {_id: false}],
