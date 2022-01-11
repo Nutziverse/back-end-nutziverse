@@ -19,6 +19,11 @@ const TrackingMakananSchema = new mongoose.Schema({
     porsi: {
       type: Number,
       required: true
+    },
+    jam: {
+      type: String,
+      default: new Date().toLocaleTimeString(),
+      required: true
     }
   }, {_id: false}],
   totKalori: {

@@ -118,8 +118,9 @@ const addTracking = async (req, res) => {
     if(trackingExist) {
       // cek if there's date now in makanan tanggal
       let today = new Date()
-      today = today.toISOString().split('T')[0]
-
+      // today = today.toISOString().split('T')[0]
+      today = today.toLocaleDateString()
+      console.log(today)
       const trackingIndex = trackingExist.tracking.findIndex(el => el.tanggal.toISOString().includes(today))
 
       // jika sudah terdapat history makanan di hari ini
@@ -133,7 +134,7 @@ const addTracking = async (req, res) => {
       // jika belum terdapat history makanan di hari ini
       else {
         const tracking = {
-          tanggal: new Date(),
+          tanggal: new Date().toLocaleDateString(),
           makanan: makanan,
           totKalori: totKalori,
           totKarbon: totKarbon
@@ -146,7 +147,7 @@ const addTracking = async (req, res) => {
       res.send({message: 'success'})
     } else {
       const tracking = {
-        tanggal: new Date(),
+        tanggal: new Date().toLocaleDateString(),
         makanan: makanan,
         totKalori: totKalori,
         totKarbon: totKarbon
