@@ -20,9 +20,30 @@ const getByID = async (req, res) => {
 	}
 };
 
-// not fix
-const searchFood = async (req, res) => {
+//for admin only
+const addFood = async (req, res) => {
 	try {
+		const newFood = req.body;
+		const createFood = new FoodModel(newFood);
+		await createFood.save();
+
+		res.send({ message: "Success" });
+	} catch (error) {
+		res.status(500).send({ message: error.message });
+	}
+};
+
+const editFood = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const updateFood = req.body;
+
+		if (Object.keys(updateFood).length === 0) {
+			res.send({ message: "Nothing to update" });
+		} else {
+			const updated = await FoodModel.updateOne({ _id: id }, updateFood);
+			res.send({ message: "Success", updated });
+		}
 	} catch (error) {
 		res.status(500).send({ message: error.message });
 	}
@@ -31,5 +52,6 @@ const searchFood = async (req, res) => {
 module.exports = {
 	getAll,
 	getByID,
-	searchFood,
+	addFood,
+	editFood,
 };

@@ -6,7 +6,8 @@ const ProfileRoute = require("./profile.router");
 const ResepRoute = require("./resep.router");
 const FoodRouter = require("./food.router");
 const TrackingRouter = require("./tracking.router");
-
+const PilihMakananRouter = require("./pilihmakanan.router");
+const RekomendasiRouter = require("./rekomendasi.router");
 const router = express.Router();
 
 router.use("/users", userRoutes);
@@ -15,6 +16,7 @@ router.use("/profile", ProfileRoute);
 router.use("/akun", AkunRoute);
 router.use("/resep", ResepRoute);
 router.use("/food", FoodRouter);
-router.use("/tracking", TrackingRouter)
-
+router.use("/tracking", TrackingRouter);
+router.use("/rekomendasi", RekomendasiRouter);
+router.use("/pilihmakanan", PilihMakananRouter);
 module.exports = router;
