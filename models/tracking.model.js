@@ -42,6 +42,10 @@ const TrackingSchema = new mongoose.Schema({
   tracking: [TrackingMakananSchema],
   kendaraan: {
     type: Number
+  },
+  serapEmisi: {
+    type: Number,
+    default: 0
   }
 
 }, opts)

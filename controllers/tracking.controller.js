@@ -166,9 +166,29 @@ const addTracking = async (req, res) => {
   }
 }
 
+const resetKarbon = async (req, res) => {
+  const {data} = dataToken(req, res)
+  const UID = data._id
+  try {
+    const trackingExist = await TrackingModel.findOne({userID: UID})
+    const emisi = trackingExist.tracking.reduce((prev, curr) => prev + curr.totKarbon, 0) - trackingExist.serapEmisi
+
+    if(emisi > 0) {
+      trackingExist.serapEmisi += emisi
+      await trackingExist.save()
+      res.send({message: "success"})
+    } else {
+      res.send({message: "tidak ada emisi yang harus diserap"})
+    }
+  } catch (error) {
+    res.status(500).send({error: error.message})
+  }
+}
+
 module.exports = {
   getTracking,
   addTracking,
   todayTracking,
-  perDateTracking
+  perDateTracking,
+  resetKarbon
 }
