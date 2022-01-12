@@ -8,11 +8,13 @@ const FoodRouter = require("./food.router");
 const TrackingRouter = require("./tracking.router");
 const PilihMakananRouter = require("./pilihmakanan.router");
 const RekomendasiRouter = require("./rekomendasi.router");
+const EditProfilRouter = require("../routers/editprofil.router");
 const router = express.Router();
 
 router.use("/users", userRoutes);
 router.use("/admin", adminRoutes);
 router.use("/profile", ProfileRoute);
+router.use("/editprofile", EditProfilRouter);
 router.use("/akun", AkunRoute);
 router.use("/resep", ResepRoute);
 router.use("/food", FoodRouter);
