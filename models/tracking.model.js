@@ -19,6 +19,10 @@ const TrackingMakananSchema = new mongoose.Schema({
     porsi: {
       type: Number,
       required: true
+    },
+    jam: {
+      type: String,
+      required: true
     }
   }, {_id: false}],
   totKalori: {
@@ -38,6 +42,10 @@ const TrackingSchema = new mongoose.Schema({
   tracking: [TrackingMakananSchema],
   kendaraan: {
     type: Number
+  },
+  serapEmisi: {
+    type: Number,
+    default: 0
   }
 
 }, opts)

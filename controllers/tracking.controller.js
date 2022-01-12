@@ -25,7 +25,7 @@ const todayTracking = async (req, res) => {
   const UID = data._id
 
   let today = new Date()
-  today = today.toISOString().split('T')[0]
+  today = today.toLocaleDateString('fr-CA')
 
   let todayTracking = null
   
@@ -66,9 +66,9 @@ const perDateTracking = async (req, res) => {
   const {data} = dataToken(req, res)
   const UID = data._id
   
-  let {date} = req.body
-  let dateTracking = null
+  let {date} = req.params
   
+  let dateTracking = null
   try {
     if(!date) {
       return res.status(400).send({message: "tolong pilih tanggal"})
@@ -110,17 +110,29 @@ const perDateTracking = async (req, res) => {
 const addTracking = async (req, res) => {
   const {data} = dataToken(req, res)
   const UID = data._id
-  const {makanan, totKalori, totKarbon} = req.body
+  let {makanan, totKalori, totKarbon} = req.body
 
   try {
     const trackingExist = await TrackingModel.findOne({userID: UID})
+    
+    let today = new Date()
+    
+    today = today.toLocaleDateString('fr-CA')
+    jam = new Date().toLocaleTimeString()
+
+    makanan.map(item => item.jam = jam)
+    
+    const tracking = {
+      tanggal: today,
+      makanan: makanan,
+      totKalori: totKalori,
+      totKarbon: totKarbon
+    }
 
     if(trackingExist) {
       // cek if there's date now in makanan tanggal
-      let today = new Date()
-      today = today.toISOString().split('T')[0]
-
-      const trackingIndex = trackingExist.tracking.findIndex(el => el.tanggal.toISOString().includes(today))
+      // const trackingIndex = trackingExist.tracking.findIndex(el => el.tanggal.toISOString().includes(today))
+      const trackingIndex = findIndexByDate(trackingExist.tracking, today)
 
       // jika sudah terdapat history makanan di hari ini
       if(trackingIndex > -1) {
@@ -132,26 +144,12 @@ const addTracking = async (req, res) => {
       } 
       // jika belum terdapat history makanan di hari ini
       else {
-        const tracking = {
-          tanggal: new Date(),
-          makanan: makanan,
-          totKalori: totKalori,
-          totKarbon: totKarbon
-        }
-
         trackingExist.tracking.push(tracking)
-        trackingExist.save()
+        await trackingExist.save()
       }
 
       res.send({message: 'success'})
     } else {
-      const tracking = {
-        tanggal: new Date(),
-        makanan: makanan,
-        totKalori: totKalori,
-        totKarbon: totKarbon
-      }
-      
       const newTracking = {
         userID: UID,
         tracking: [tracking],
@@ -168,9 +166,29 @@ const addTracking = async (req, res) => {
   }
 }
 
+const resetKarbon = async (req, res) => {
+  const {data} = dataToken(req, res)
+  const UID = data._id
+  try {
+    const trackingExist = await TrackingModel.findOne({userID: UID})
+    const emisi = trackingExist.tracking.reduce((prev, curr) => prev + curr.totKarbon, 0) - trackingExist.serapEmisi
+
+    if(emisi > 0) {
+      trackingExist.serapEmisi += emisi
+      await trackingExist.save()
+      res.send({message: "success"})
+    } else {
+      res.send({message: "tidak ada emisi yang harus diserap"})
+    }
+  } catch (error) {
+    res.status(500).send({error: error.message})
+  }
+}
+
 module.exports = {
   getTracking,
   addTracking,
   todayTracking,
-  perDateTracking
+  perDateTracking,
+  resetKarbon
 }
