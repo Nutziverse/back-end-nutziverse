@@ -3,20 +3,12 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const { generateToken, verifyToken } = require("../helpers");
 const loginByGoogle = require("../helpers/google.auth");
+const registerByGoogle = require("../helpers/google.auth");
 
 class UsersController {
   static async registerUser(req, res) {
     try {
-      let {
-        nama,
-        jeniskelamin,
-        tinggi,
-        berat,
-        umur,
-        no_hp,
-        password,
-        aktivitasFisik,
-      } = req.body;
+      let { nama, jeniskelamin, tinggi, berat, umur, no_hp, password, aktivitasFisik } = req.body;
       aktivitasFisik = Number(aktivitasFisik);
       const noHPExist = await UsersModel.findOne({ no_hp: no_hp });
 
@@ -52,12 +44,12 @@ class UsersController {
           password: password,
         });
         const saved = await users.save();
-				const tokenUser = {
-					_id: saved._id,
-					role: "user",
-				};
-				const createToken = generateToken(tokenUser);
-        res.status(201).send({message: "success", token: createToken});
+        const tokenUser = {
+          _id: saved._id,
+          role: "user",
+        };
+        const createToken = generateToken(tokenUser);
+        res.status(201).send({ message: "success", token: createToken });
       } else {
         res.send("duplicate email");
       }
@@ -142,10 +134,28 @@ class UsersController {
     }
   }
 
+  // registerByGoogle
+
   static async registerByGoogle(req, res) {
     try {
-      let { email, berat, tinggi, jeniskelamin, umur, aktivitasFisik } =
-        req.body;
+      const profile = req.body.profileObj;
+      const { name, email } = profile;
+      const users = new UsersModel({
+        nama: nama,
+        email: email,
+      });
+      const saved = await users.save();
+      res.status(200).send(saved);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  }
+
+  //registerByGoogle
+
+  static async registerByGoogle(req, res) {
+    try {
+      let { email, berat, tinggi, jeniskelamin, umur, aktivitasFisik } = req.body;
 
       let keterangan;
       aktivitasFisik = Number(aktivitasFisik);
@@ -178,13 +188,13 @@ class UsersController {
           aktivitasFisik: aktivitasFisik,
         }
       );
-      
-			const tokenUser = {
-				_id: user._id,
-				role: "user",
-			};
-			const createToken = generateToken(tokenUser);
-			
+
+      const tokenUser = {
+        _id: user._id,
+        role: "user",
+      };
+      const createToken = generateToken(tokenUser);
+
       res.send({ message: "success", token: createToken });
     } catch (error) {
       res.status(401).send(error.message);
