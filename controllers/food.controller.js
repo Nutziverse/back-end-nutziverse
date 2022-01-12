@@ -48,10 +48,20 @@ const editFood = async (req, res) => {
 		res.status(500).send({ message: error.message });
 	}
 };
+const getMultipleFood = async (req, res) => {
+	try {
+		const id = req.body.idmakanan;
+		const data = await FoodModel.find({ _id: { $in: id } });
+		res.status(200).send(data);
+	} catch (error) {
+		res.status(500).send(error);
+	}
+};
 
 module.exports = {
 	getAll,
 	getByID,
 	addFood,
 	editFood,
+	getMultipleFood,
 };
