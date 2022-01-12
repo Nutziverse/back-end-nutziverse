@@ -25,7 +25,7 @@ const todayTracking = async (req, res) => {
   const UID = data._id
 
   let today = new Date()
-  today = today.toISOString().split('T')[0]
+  today = today.toLocaleDateString('fr-CA')
 
   let todayTracking = null
   
@@ -66,9 +66,9 @@ const perDateTracking = async (req, res) => {
   const {data} = dataToken(req, res)
   const UID = data._id
   
-  let {date} = req.body
-  let dateTracking = null
+  let {date} = req.params
   
+  let dateTracking = null
   try {
     if(!date) {
       return res.status(400).send({message: "tolong pilih tanggal"})
