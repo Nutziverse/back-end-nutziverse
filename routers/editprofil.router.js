@@ -4,6 +4,6 @@ const { allowedAdmin, verifyToken, allowedUser } = require("../helpers");
 
 const router = express.Router();
 
-router.patch("/:id", [verifyToken, allowedUser], editProfil);
+router.patch("/", [verifyToken, allowedUser], editProfil);
 
 module.exports = router;
