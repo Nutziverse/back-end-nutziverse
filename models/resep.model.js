@@ -12,6 +12,10 @@ const ResepSchema = new mongoose.Schema({
   deskripsi: {
     type: String,
   },
+  bahan: [{ type: String }],
+  waktupenyajian: {
+    type: String,
+  },
   idMakanan: {
     type: mongoose.Types.ObjectId,
     ref: "FoodModel",
