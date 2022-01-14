@@ -9,7 +9,7 @@ const editProfil = async (req, res) => {
   try {
     const UID = data._id;
     const editProfile = await UserModel.findOneAndUpdate({ _id: UID }, updateData);
-    res.send(editProfile);
+    res.send({ message: "success" });
   } catch (error) {
     res.status(500);
     res.send(error);

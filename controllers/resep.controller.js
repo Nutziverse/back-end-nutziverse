@@ -18,6 +18,8 @@ class ResepController {
         porsi: porsi,
         image: image,
         deskripsi: deskripsi,
+        bahan: bahan,
+        waktupenyajian: waktupenyajian,
         idMakanan: idMakanan,
       });
       console.log(Resep);
