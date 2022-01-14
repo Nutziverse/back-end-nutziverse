@@ -4,7 +4,7 @@ const ResepModel = require("../models/resep.model");
 class ResepController {
   static async getResep(req, res) {
     try {
-      const reseps = await ResepModel.find();
+      const reseps = await ResepModel.find().populate('idMakanan');
       res.send(reseps);
     } catch (error) {
       res.status(500);
