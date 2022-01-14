@@ -38,25 +38,31 @@ const todayTracking = async (req, res) => {
       }
     })
     
-    const todayTrackingIndex = findIndexByDate(tracking.tracking, today)
-    
-    if(todayTrackingIndex > -1) {
-      todayTracking = tracking.tracking[todayTrackingIndex]
-    }
+    if(tracking) {
+      const todayTrackingIndex = findIndexByDate(tracking.tracking, today)
 
-    const {totKarbohidrat, totProtein, totLemak} = calculate_totalNutrition(todayTracking)
-    
-    const response = {
-      _id: tracking._id,
-      userID: tracking.userID,
-      tracking: todayTracking,
-      totKarbohidrat: totKarbohidrat,
-      totProtein: totProtein,
-      totLemak: totLemak,
-      kendaraan: tracking.kendaraan
+      if(todayTrackingIndex > -1) {
+        todayTracking = tracking.tracking[todayTrackingIndex]
+      }
+
+      const {totKarbohidrat, totProtein, totLemak} = calculate_totalNutrition(todayTracking)
+
+      const response = {
+        _id: tracking._id,
+        userID: tracking.userID,
+        tracking: todayTracking,
+        totKarbohidrat: totKarbohidrat,
+        totProtein: totProtein,
+        totLemak: totLemak,
+        kendaraan: tracking.kendaraan
+      }
+
+      res.send(response)
+    } else {
+      res.send(null)
     }
+        
     
-    res.send(response)
   } catch (error) {
     res.status(500).send({error: error.message})
   }
@@ -81,26 +87,32 @@ const perDateTracking = async (req, res) => {
         populate: 'makananID'
       }
     })
-    
-    const dateTrackingIndex = findIndexByDate(tracking.tracking, date)
-    
-    if(dateTrackingIndex > -1) {
-      dateTracking = tracking.tracking[dateTrackingIndex]
-    }
 
-    const {totKarbohidrat, totProtein, totLemak} = calculate_totalNutrition(dateTracking)
-    
-    const response = {
-      _id: tracking._id,
-      userID: tracking.userID,
-      tracking: dateTracking,
-      totKarbohidrat: totKarbohidrat,
-      totProtein: totProtein,
-      totLemak: totLemak,
-      kendaraan: tracking.kendaraan
+    if(tracking) {
+      
+      const dateTrackingIndex = findIndexByDate(tracking.tracking, date)
+      
+      if(dateTrackingIndex > -1) {
+        dateTracking = tracking.tracking[dateTrackingIndex]
+      }
+  
+      const {totKarbohidrat, totProtein, totLemak} = calculate_totalNutrition(dateTracking)
+      
+      const response = {
+        _id: tracking._id,
+        userID: tracking.userID,
+        tracking: dateTracking,
+        totKarbohidrat: totKarbohidrat,
+        totProtein: totProtein,
+        totLemak: totLemak,
+        kendaraan: tracking.kendaraan
+      }
+      
+      res.send(response)
+
+    } else {
+      res.send(null)
     }
-    
-    res.send(response)
   } catch (error) {
     res.status(500).send({error: error.message})
   }
