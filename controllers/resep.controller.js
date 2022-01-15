@@ -4,7 +4,7 @@ const ResepModel = require("../models/resep.model");
 class ResepController {
   static async getResep(req, res) {
     try {
-      const reseps = await ResepModel.find();
+      const reseps = await ResepModel.find().populate("idMakanan");
       res.send(reseps);
     } catch (error) {
       res.status(500);
@@ -32,7 +32,7 @@ class ResepController {
   static async getResepByID(req, res) {
     try {
       const ID = req.params.id;
-      const resep = await ResepModel.findById(ID);
+      const resep = await ResepModel.findById(ID).populate("idMakanan");
       res.send(resep);
     } catch (error) {
       res.send({ message: error });

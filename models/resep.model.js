@@ -14,7 +14,7 @@ const ResepSchema = new mongoose.Schema({
   },
   idMakanan: {
     type: mongoose.Types.ObjectId,
-    ref: "FoodModel",
+    ref: "Food",
   },
 });
 const ResepModel = mongoose.model("Resep", ResepSchema);
